@@ -38,14 +38,12 @@ public class Crosshair : MonoBehaviour
         //toADS
         if(scaleToADS && scaleDelay < 0.2 && !scaleFromADS)
         {
-            Debug.Log("Count");
             scaleTrigger += 1.8f;
             scaleDelay += 1 * Time.deltaTime;
             position = new Rect((Screen.width - crosshairSprite.width / 2 + scaleTrigger) / 2, (Screen.height - crosshairSprite.height / 2 + scaleTrigger) / 2 , crosshairSprite.width / 2 - scaleTrigger, crosshairSprite.height / 2 - scaleTrigger);
         }
         if (scaleDelay >= 0.2 && scaleToADS && !scaleFromADS)
         {
-            scaleTrigger = 0;
             scaleToADS = false;
             scaleDelay = 0;
             crosshairTrigger = false;
@@ -54,13 +52,10 @@ public class Crosshair : MonoBehaviour
         //fromADS
         if (scaleFromADS && scaleDelay < 0.2 && !scaleToADS)
         {
-            scaleTrigger += 1.8f;
+            scaleTrigger -= 1.8f;
             scaleDelay += 1 * Time.deltaTime;
             crosshairTrigger = true;
-            position.x = (Screen.width - crosshairSprite.width / 2 - scaleTrigger) / 2;
-            position.y = (Screen.width - crosshairSprite.width / 2 - scaleTrigger) / 2;
-            position.width += scaleTrigger;
-            position.height += scaleTrigger;
+            position = new Rect((Screen.width - crosshairSprite.width / 2 + scaleTrigger) / 2, (Screen.height - crosshairSprite.height / 2 + scaleTrigger) / 2, crosshairSprite.width / 2 - scaleTrigger, crosshairSprite.height / 2 - scaleTrigger);
         }
         if (scaleFromADS && !scaleToADS && scaleDelay >= 0.2)
         {
