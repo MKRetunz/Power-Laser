@@ -4,8 +4,8 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
     public GameObject gun;
     public Animator shootanim;
-    public bool shooting;
-    public bool ADS;
+    public static bool shooting;
+    public static bool ADS;
 
 	// Use this for initialization
 	void Start () {
