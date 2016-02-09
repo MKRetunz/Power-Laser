@@ -6,9 +6,10 @@ public class Crosshair : MonoBehaviour
     public Texture2D crosshairSprite;
     public Rect position;
     public float scaleTrigger = 0.1f;
-    public int scaleDelay = 0;
+    public float scaleDelay = 0;
     public static bool crosshairTrigger = true;
-    public bool scaling = false;
+    public bool scaleToADS = false;
+    public bool scaleFromADS = false;
 
     void Start()
     {
@@ -20,11 +21,11 @@ public class Crosshair : MonoBehaviour
         //Run/ADS/Idle controller
         if (!PlayerController.ADS && Input.GetMouseButtonDown(1))
         {
-            scaling = true;
+            scaleToADS = true;
         }
         else if (PlayerController.ADS && Input.GetMouseButtonDown(1))
         {
-
+            scaleFromADS = true;
         }
 
         if (crosshairTrigger)
@@ -33,18 +34,39 @@ public class Crosshair : MonoBehaviour
         }
     }
 
-    void Update() { 
-        if(scaling && scaleDelay < 100)
+    void Update() {
+        //toADS
+        if(scaleToADS && scaleDelay < 0.2 && !scaleFromADS)
         {
-            scaleTrigger += 0.1f;
-            scaleDelay++;
-            position = new Rect((Screen.width - crosshairSprite.width / 2) / 2 - scaleTrigger, (Screen.height - crosshairSprite.height / 2) / 2 + scaleTrigger, crosshairSprite.width / 2 + scaleTrigger, crosshairSprite.height / 2 - scaleTrigger);
+            Debug.Log("Count");
+            scaleTrigger += 1.8f;
+            scaleDelay += 1 * Time.deltaTime;
+            position = new Rect((Screen.width - crosshairSprite.width / 2 + scaleTrigger) / 2, (Screen.height - crosshairSprite.height / 2 + scaleTrigger) / 2 , crosshairSprite.width / 2 - scaleTrigger, crosshairSprite.height / 2 - scaleTrigger);
         }
-        if (scaleDelay >= 100 && scaling)
+        if (scaleDelay >= 0.2 && scaleToADS && !scaleFromADS)
         {
-            scaling = false;
+            scaleTrigger = 0;
+            scaleToADS = false;
             scaleDelay = 0;
             crosshairTrigger = false;
+        }
+
+        //fromADS
+        if (scaleFromADS && scaleDelay < 0.2 && !scaleToADS)
+        {
+            scaleTrigger += 1.8f;
+            scaleDelay += 1 * Time.deltaTime;
+            crosshairTrigger = true;
+            position.x = (Screen.width - crosshairSprite.width / 2 - scaleTrigger) / 2;
+            position.y = (Screen.width - crosshairSprite.width / 2 - scaleTrigger) / 2;
+            position.width += scaleTrigger;
+            position.height += scaleTrigger;
+        }
+        if (scaleFromADS && !scaleToADS && scaleDelay >= 0.2)
+        {
+            scaleTrigger = 0;
+            scaleFromADS = false;
+            scaleDelay = 0;
         }
     }
 }
