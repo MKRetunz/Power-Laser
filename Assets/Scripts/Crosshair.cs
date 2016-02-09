@@ -3,30 +3,48 @@ using System.Collections;
 
 public class Crosshair : MonoBehaviour
 {
-    public Texture2D crosshairTexture;
+    public Texture2D crosshairSprite;
     public Rect position;
-    public static bool OriginalOn = true;
+    public float scaleTrigger = 0.1f;
+    public int scaleDelay = 0;
+    public static bool crosshairTrigger = true;
+    public bool scaling = false;
 
     void Start()
     {
-        position = new Rect((Screen.width - crosshairTexture.width / 2) / 2, (Screen.height - crosshairTexture.height / 2) / 2, crosshairTexture.width / 2, crosshairTexture.height / 2);
+        position = new Rect((Screen.width - crosshairSprite.width / 2) / 2, (Screen.height - crosshairSprite.height / 2) / 2, crosshairSprite.width / 2, crosshairSprite.height / 2);
     }
 
     void OnGUI()
     {
         //Run/ADS/Idle controller
-        if (!PlayerController.ADS)
+        if (!PlayerController.ADS && Input.GetMouseButtonDown(1))
         {
-            OriginalOn = true;
+            scaling = true;
         }
-        else
+        else if (PlayerController.ADS && Input.GetMouseButtonDown(1))
         {
-            //OriginalOn = false;
+
         }
 
-        if (OriginalOn == true)
+        if (crosshairTrigger)
         {
-            GUI.DrawTexture(position, crosshairTexture);
+            GUI.DrawTexture(position, crosshairSprite);
+        }
+    }
+
+    void Update() { 
+        if(scaling && scaleDelay < 100)
+        {
+            scaleTrigger += 0.1f;
+            scaleDelay++;
+            position = new Rect((Screen.width - crosshairSprite.width / 2) / 2 - scaleTrigger, (Screen.height - crosshairSprite.height / 2) / 2 + scaleTrigger, crosshairSprite.width / 2 + scaleTrigger, crosshairSprite.height / 2 - scaleTrigger);
+        }
+        if (scaleDelay >= 100 && scaling)
+        {
+            scaling = false;
+            scaleDelay = 0;
+            crosshairTrigger = false;
         }
     }
 }
