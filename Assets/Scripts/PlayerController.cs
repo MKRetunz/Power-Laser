@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
     public GameObject gun;
     public Animator shootanim;
     public static bool shooting;
     public static bool ADS;
+    public static bool OverHeat;
+    public Slider HeatSlider;
     public float crouchingSpeed;
     public float CspeedUp;
+    public float GunHeat;
 
 	// Use this for initialization
 	void Start () {
@@ -15,12 +19,13 @@ public class PlayerController : MonoBehaviour {
         ADS = false;
         crouchingSpeed = 0.1f;
         CspeedUp = crouchingSpeed;
+        GunHeat = 0.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         //Shooting mechanics
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && OverHeat == false)
         {
             if (!ADS)
             {
@@ -34,6 +39,7 @@ public class PlayerController : MonoBehaviour {
                 gun.GetComponent<Animator>().Play("GunADS_Shoot");
                 //shooting = true;
             }
+            GunHeat += Time.deltaTime * 20;
         }
 
         //Aim mechanics
@@ -73,6 +79,15 @@ public class PlayerController : MonoBehaviour {
             }
         }
         transform.localPosition = new Vector3(0, CspeedUp, 0);
-        Debug.Log(CspeedUp);
+        GunHeat -= Time.deltaTime / 2;
+        
+        if (GunHeat < 0.0f)
+        {
+            GunHeat = 0.0f;
+            OverHeat = false;
+        }
+        if (GunHeat > 1.5f) { OverHeat = true; }
+        HeatSlider.value = GunHeat;
+        Debug.Log(GunHeat);
     }
 }
