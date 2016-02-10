@@ -5,7 +5,13 @@ using System.Collections;
 
 public class LaserGun : MonoBehaviour
 {
+    public ParticleSystem endEffect;
+    public Camera c;
+
     LineRenderer line;
+    Vector3 shotPoint;
+    Transform endEffectTransform;
+
 
     void Start()
     {
@@ -17,7 +23,8 @@ public class LaserGun : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) {
+        shotPoint = transform.position;
+        if (Input.GetMouseButtonDown(0)) {
             StopCoroutine("ShootLaser");
             StartCoroutine("ShootLaser");
         }
@@ -29,18 +36,24 @@ public class LaserGun : MonoBehaviour
 
         while(Input.GetMouseButtonDown(0))
         {
-            Ray ray = new Ray(transform.position, transform.forward);
+            line.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0, Time.time);
+            
+            Ray ray = new Ray();
+            ray = c.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
             RaycastHit hit;
 
-
-            line.SetPosition(0, ray.origin);
+            line.SetPosition(0, shotPoint);
 
             if(Physics.Raycast(ray, out hit, 100))
             {
                 line.SetPosition(1, hit.point);
-                if(hit.rigidbody)
+                if(hit.rigidbody && !hit.transform.GetComponent<TargetScript>().isAlive)
                 {
                     hit.rigidbody.AddForceAtPosition(transform.forward * 1000, hit.point);
+                } else if (hit.rigidbody)
+                {
+                    hit.rigidbody.AddForceAtPosition(transform.forward * 150, hit.point);
+                    hit.transform.GetComponent<TargetScript>().hp--;
                 }
             }
             else
