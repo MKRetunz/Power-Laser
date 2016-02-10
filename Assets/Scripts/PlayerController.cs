@@ -6,11 +6,15 @@ public class PlayerController : MonoBehaviour {
     public Animator shootanim;
     public static bool shooting;
     public static bool ADS;
+    public float crouchingSpeed;
+    public float CspeedUp;
 
 	// Use this for initialization
 	void Start () {
         shooting = false;
         ADS = false;
+        crouchingSpeed = 0.1f;
+        CspeedUp = crouchingSpeed;
 	}
 	
 	// Update is called once per frame
@@ -49,5 +53,26 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
+        //Crouching
+        if (Input.GetKey("k"))
+        {
+            CspeedUp -= crouchingSpeed * (Time.deltaTime * 10);
+            if (CspeedUp < -0.6f)
+            {
+                CspeedUp = -0.6f;
+            }
+        }
+
+        else
+        {
+            
+            CspeedUp += crouchingSpeed * (Time.deltaTime * 10);
+            if (CspeedUp > 0.0f)
+            {
+                CspeedUp = 0.0f;
+            }
+        }
+        transform.localPosition = new Vector3(0, CspeedUp, 0);
+        Debug.Log(CspeedUp);
     }
 }
