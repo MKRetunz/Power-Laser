@@ -5,12 +5,12 @@ using System.Collections;
 
 public class LaserGun : MonoBehaviour
 {
-    public ParticleSystem endEffect;
     public Camera c;
+    public GameObject laserparticles;
+    public Transform particlerotation;
 
     LineRenderer line;
     Vector3 shotPoint;
-    Transform endEffectTransform;
 
 
     void Start()
@@ -55,6 +55,7 @@ public class LaserGun : MonoBehaviour
                     hit.rigidbody.AddForceAtPosition(transform.forward * 150, hit.point);
                     hit.transform.GetComponent<TargetScript>().hp--;
                 }
+                Instantiate(laserparticles, hit.point, particlerotation.transform.rotation);
             }
             else
             {

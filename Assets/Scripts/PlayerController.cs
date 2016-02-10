@@ -7,8 +7,6 @@ public class PlayerController : MonoBehaviour
     public Animator shootanim;
     public static bool shooting;
     public static bool ADS;
-    public Rigidbody bullet;
-    public float bulletspeed = 20;
 
     // Use this for initialization
     void Start()
