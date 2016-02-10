@@ -28,9 +28,8 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Pressed left click.");
                 gun.GetComponent<Animator>().Play("Gun_Shoot");
 
-                Rigidbody instantiatedProjectile = Instantiate(bullet, GameObject.FindWithTag("shotpoint").transform.position, GameObject.FindWithTag("shotpoint").transform.rotation) as Rigidbody;
-
-                instantiatedProjectile.velocity = transform.TransformDirection(new Vector3(0, 0, bulletspeed));
+                //Rigidbody instantiatedProjectile = Instantiate(bullet, GameObject.FindWithTag("shotpoint").transform.position, GameObject.FindWithTag("shotpoint").transform.rotation) as Rigidbody;
+                //instantiatedProjectile.velocity = transform.TransformDirection(new Vector3(0, 0, bulletspeed));
 
             }
             else if (ADS)
@@ -38,9 +37,9 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Pressed left click.");
                 gun.GetComponent<Animator>().Play("GunADS_Shoot");
 
-                Rigidbody instantiatedProjectile = Instantiate(bullet, transform.position, transform.rotation) as Rigidbody;
+               // Rigidbody instantiatedProjectile = Instantiate(bullet, transform.position, transform.rotation) as Rigidbody;
 
-                instantiatedProjectile.velocity = transform.TransformDirection(new Vector3(0, 0, bulletspeed));
+                //instantiatedProjectile.velocity = transform.TransformDirection(new Vector3(0, 0, bulletspeed));
 
             }
         }
