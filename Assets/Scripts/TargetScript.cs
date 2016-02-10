@@ -24,4 +24,16 @@ public class TargetScript : MonoBehaviour {
             transform.LookAt(target);
         }
 	}
+
+    public void GetHit()
+    {
+        StartCoroutine("TargetHit");
+    }
+
+    IEnumerator TargetHit()
+    {
+        gameObject.GetComponent<Renderer>().material.color = new Color(90, 0, 0, 100);
+        yield return new WaitForSeconds(0.5f);
+        gameObject.GetComponent<Renderer>().material.color = new Color(0, 0, 0, 100);
+    }
 }

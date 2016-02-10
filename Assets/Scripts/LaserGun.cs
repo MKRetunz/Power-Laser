@@ -54,6 +54,7 @@ public class LaserGun : MonoBehaviour
                 {
                     hit.rigidbody.AddForceAtPosition(transform.forward * 150, hit.point);
                     hit.transform.GetComponent<TargetScript>().hp--;
+                    hit.transform.GetComponent<TargetScript>().GetHit();
                 }
                 Instantiate(laserparticles, hit.point, particlerotation.transform.rotation);
             }
