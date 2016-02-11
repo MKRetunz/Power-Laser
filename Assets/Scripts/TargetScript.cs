@@ -5,6 +5,8 @@ public class TargetScript : MonoBehaviour {
     public byte hp;
     public bool isAlive;
     public Transform target;
+    public GameObject player;
+    Vector3 distance;
 
 	// Use this for initialization
 	void Start () {
@@ -14,7 +16,7 @@ public class TargetScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if(hp <= 0)
+        if (hp <= 0)
         {
             isAlive = false;
         }
