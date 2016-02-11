@@ -23,7 +23,7 @@ public class Cover : MonoBehaviour
     {
         if (CanCover == true && Input.GetKeyDown("l"))
         {
-            Debug.Log("Still working");
+            transform.localPosition = new Vector3(0, 0.2f, 0);
             CanCover = false;
         }
     }

@@ -8,7 +8,12 @@ public class PlayerController : MonoBehaviour {
     public static bool shooting;
     public static bool ADS;
     public static bool OverHeat;
+    private bool CanCover;
+    private bool CanCrouch;
+    private bool Covering;
+    private bool showText;
     public Slider HeatSlider;
+    public Text CoverPopUp;
     public float crouchingSpeed;
     public float CspeedUp;
     public float GunHeat;
@@ -20,10 +25,19 @@ public class PlayerController : MonoBehaviour {
         crouchingSpeed = 0.1f;
         CspeedUp = crouchingSpeed;
         GunHeat = 0.0f;
+        showText = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.GetComponent<Collider>().name == "Cover")
+        {
+            Debug.Log("I'm Working");
+            showText = true;
+        }
+    }
+    // Update is called once per frame
+    void Update () {
         //Shooting mechanics
         if (Input.GetMouseButtonDown(0) && OverHeat == false)
         {
@@ -80,7 +94,7 @@ public class PlayerController : MonoBehaviour {
         }
         transform.localPosition = new Vector3(0, CspeedUp, 0);
         GunHeat -= Time.deltaTime / 2;
-        
+
         if (GunHeat < 0.0f)
         {
             GunHeat = 0.0f;
@@ -88,5 +102,14 @@ public class PlayerController : MonoBehaviour {
         }
         if (GunHeat > 1.5f) { OverHeat = true; }
         HeatSlider.value = GunHeat;
+    }
+
+    void OnGUI()
+    {
+        if (showText) {
+        GUIStyle Coverstyle = new GUIStyle();
+        Coverstyle.alignment = TextAnchor.MiddleCenter;
+        GUI.Label(new Rect(Screen.width / 2 - 200, Screen.height - 30, 400, 30), "Press L for cover.", Coverstyle);
+        }
     }
 }
