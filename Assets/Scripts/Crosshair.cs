@@ -34,14 +34,15 @@ public class Crosshair : MonoBehaviour
         }
     }
 
-    void Update() {
+    void Update()
+    {
         //toADS
-        if(scaleToADS && scaleDelay < 0.2 && !scaleFromADS)
+        if (scaleToADS && scaleDelay < 0.2 && !scaleFromADS)
         {
             Debug.Log("Count");
             scaleTrigger += 1.8f;
             scaleDelay += 1 * Time.deltaTime;
-            position = new Rect((Screen.width - crosshairSprite.width / 2 + scaleTrigger) / 2, (Screen.height - crosshairSprite.height / 2 + scaleTrigger) / 2 , crosshairSprite.width / 2 - scaleTrigger, crosshairSprite.height / 2 - scaleTrigger);
+            position = new Rect((Screen.width - crosshairSprite.width / 2 + scaleTrigger) / 2, (Screen.height - crosshairSprite.height / 2 + scaleTrigger) / 2, crosshairSprite.width / 2 - scaleTrigger, crosshairSprite.height / 2 - scaleTrigger);
         }
         if (scaleDelay >= 0.2 && scaleToADS && !scaleFromADS)
         {

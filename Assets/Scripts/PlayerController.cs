@@ -88,6 +88,5 @@ public class PlayerController : MonoBehaviour {
         }
         if (GunHeat > 1.5f) { OverHeat = true; }
         HeatSlider.value = GunHeat;
-        Debug.Log(GunHeat);
     }
 }
