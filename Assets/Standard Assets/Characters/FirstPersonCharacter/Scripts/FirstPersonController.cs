@@ -27,11 +27,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
-        [SerializeField] private float crouchDeltaHeight;
+        [SerializeField] private GameObject gun;
+
+        public bool isRunning = false;
 
         private Camera m_Camera;
         private bool m_Jump;
-        private bool crouching;
         private float m_YRotation;
         private Vector2 m_Input;
         private Vector3 m_MoveDir = Vector3.zero;
@@ -108,18 +109,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
             m_MoveDir.x = desiredMove.x*speed;
-            m_MoveDir.z = desiredMove.z*speed;
-
-
-            //if crouching
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                crouching = true;
-            }
-            else
-            {
-                crouching = false;
-            }
+            m_MoveDir.z = desiredMove.z * speed;
 
 
                 if (m_CharacterController.isGrounded)
@@ -144,6 +134,24 @@ namespace UnityStandardAssets.Characters.FirstPerson
             UpdateCameraPosition(speed);
 
             m_MouseLook.UpdateCursorLock();
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                m_IsWalking = true;
+                isRunning = false;
+                gun.GetComponent<Animator>().Play("Idle");
+            }
+
+            if (!m_IsWalking && m_CharacterController.isGrounded)
+            {
+                isRunning = true;
+                gun.GetComponent<Animator>().Play("Gun_Run");
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning)
+            {
+                isRunning = false;
+                gun.GetComponent<Animator>().Play("Idle");
+            }
         }
 
 
@@ -225,7 +233,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
 #if !MOBILE_INPUT
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
-            m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
+            if(!Input.GetMouseButton(0))
+            {
+                m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
+            }
+            
 #endif
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
