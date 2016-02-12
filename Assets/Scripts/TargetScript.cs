@@ -29,6 +29,17 @@ public class TargetScript : MonoBehaviour {
 
     public void GetHit()
     {
+        if(hp > 1)
+        {
+            HUD.score += 10;
+            HUD.enemyHit = true;
+        }
+        else if(hp == 1)
+        {
+            HUD.score += 80;
+            HUD.enemyDie = true;
+        }
+        hp--;
         StartCoroutine("TargetHit");
     }
 
