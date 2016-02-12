@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Crouching
-        if (Input.GetKey("k"))
+        if (Input.GetKey("x"))
         {
             CspeedUp -= crouchingSpeed * (Time.deltaTime * 10);
             if (CspeedUp < -0.6f)
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour {
 
         //Cover
 
-        else if (CanCover && Input.GetKey("l"))
+        else if (CanCover == true && Input.GetKey("z"))
         {
             CspeedUp = -0.6f;
         }
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour {
         GUIStyle Coverstyle = new GUIStyle();
         Coverstyle.alignment = TextAnchor.MiddleCenter;
         Coverstyle.fontSize = 50;
-        GUI.Label(new Rect(Screen.width / 2 - 200, Screen.height - 40, 400, 30), "Press L for cover.", Coverstyle);
+        GUI.Label(new Rect(Screen.width / 2 - 200, Screen.height - 40, 400, 30), "Hold Z for cover.", Coverstyle);
         }
     }
 }
