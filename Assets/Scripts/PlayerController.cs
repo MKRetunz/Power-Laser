@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public float CspeedUp;
     public float GunHeat;
     public float TimerCover;
+    public float hSliderValue = 0;
 
     // Use this for initialization
     void Start()
@@ -143,7 +144,6 @@ public class PlayerController : MonoBehaviour
                 ADS = false;
             }
         }
-
     }
 
     void OnGUI()

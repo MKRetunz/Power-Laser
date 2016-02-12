@@ -32,7 +32,7 @@ public class LaserGun : MonoBehaviour
     void Update()
     {
         shotPoint = transform.position;
-        if (Input.GetMouseButtonDown(0) && !PlayerController.shooting && !PlayerController.switchADS) {
+        if (Input.GetMouseButtonDown(0) && !PlayerController.shooting && !PlayerController.switchADS && !PlayerController.OverHeat) {
             StopCoroutine("ShootLaser");
             StartCoroutine("ShootLaser");
         }
@@ -93,6 +93,5 @@ public class LaserGun : MonoBehaviour
         }
 
     PlayerController.shooting = true;
-    //line.enabled = false;
     }
 }
