@@ -16,6 +16,8 @@ public class LaserGun : MonoBehaviour
     float speed;
     float alpha;
 
+    int gunDamage;
+
 
     void Start()
     {
@@ -27,6 +29,8 @@ public class LaserGun : MonoBehaviour
         shotDelay = 0;
 
         Cursor.lockState = CursorLockMode.Locked;
+
+        gunDamage = 30; //Will need to be pulled from another class, or be adjusted.
     }
 
     void Update()
@@ -80,7 +84,7 @@ public class LaserGun : MonoBehaviour
                 else if (hit.rigidbody)
                 {
                     hit.rigidbody.AddForceAtPosition(transform.forward * 150, hit.point);
-                    hit.transform.GetComponent<TargetScript>().GetHit();
+                    hit.transform.GetComponent<TargetScript>().GetHit(gunDamage);
                 }
                 Instantiate(laserparticles, hit.point, particlerotation.transform.rotation);
             }

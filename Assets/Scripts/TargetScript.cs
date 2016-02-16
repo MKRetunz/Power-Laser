@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class TargetScript : MonoBehaviour {
-    public byte hp;
+    public int hp;
     public bool isAlive;
     public Transform target;
     public GameObject player;
@@ -10,7 +10,7 @@ public class TargetScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        hp = 3;
+        hp = 100;
         isAlive = true;
 	}
 	
@@ -27,19 +27,19 @@ public class TargetScript : MonoBehaviour {
         }
 	}
 
-    public void GetHit()
+    public void GetHit(int damage)
     {
+        hp -= damage;
         if(hp > 1)
         {
             HUD.score += 10;
             HUD.enemyHit = true;
         }
-        else if(hp == 1)
+        else if(hp <= 0)
         {
             HUD.score += 80;
             HUD.enemyDie = true;
         }
-        hp--;
         StartCoroutine("TargetHit");
     }
 
