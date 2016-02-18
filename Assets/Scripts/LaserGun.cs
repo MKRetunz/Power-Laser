@@ -38,14 +38,45 @@ public class LaserGun : MonoBehaviour
         GameObject FirstPersonCharacter = GameObject.Find("FirstPersonCharacter");
         PlayerController playercontroller = FirstPersonCharacter.GetComponent<PlayerController>();
 
-        if (playercontroller.currentGun == 0f)
+        //Gun damage
+        if (playercontroller.currentGun == 0)
         {
             gunDamage = 17;
         }
 
-        if (playercontroller.currentGun == 1f)
+        if (playercontroller.currentGun == 1)
+        {
+            gunDamage = 20;
+        }
+
+        if (playercontroller.currentGun == 2)
+        {
+            gunDamage = 80;
+        }
+
+        if (playercontroller.currentGun == 3)
         {
             gunDamage = 40;
+        }
+
+        if (playercontroller.currentGun == 4)
+        {
+            gunDamage = 20;
+        }
+
+        if (playercontroller.currentGun == 5)
+        {
+            gunDamage = 100;
+        }
+
+        if (playercontroller.currentGun == 6)
+        {
+            gunDamage = 100;
+        }
+
+        if (playercontroller.currentGun == 7)
+        {
+            gunDamage = 70;
         }
 
         shotPoint = transform.position;

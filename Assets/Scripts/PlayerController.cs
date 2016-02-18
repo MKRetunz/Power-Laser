@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     public float TimerCover;
     public float hSliderValue = 0;
     private float shootDelay;
-    public float currentGun;
+    public int currentGun;
     public int maxGuns;
 
     //UI
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
         crouchingSpeed = 0.1f;
         CspeedUp = crouchingSpeed;
         GunHeat = 0.0f;
-        currentGun = 0f;
+        currentGun = 0;
 
         maxGuns = 8;
      
