@@ -25,13 +25,12 @@ public class LaserGun : MonoBehaviour
         line = GetComponent<LineRenderer>();
         line.enabled = false;
         laserShot = false;
-        speed = 2;
+        speed = 10;
         alpha = 1;
         shotDelay = 0;
 
         Cursor.lockState = CursorLockMode.Locked;
 
-        //gunDamage = 30; //Will need to be pulled from another class, or be adjusted.
     }
 
     void Update()

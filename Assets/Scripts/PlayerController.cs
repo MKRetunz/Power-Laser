@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
         shooting = false;
         switchADS = false;
         ADS = false;
+
+        rifle.SetActive(false);
     }
 
     void OnTriggerEnter(Collider col)
@@ -172,13 +174,13 @@ public class PlayerController : MonoBehaviour
     void switchGun(int newWeapon)
     {
         //Add an Array
-        if(gun.activeSelf)
+        if(newWeapon == 0)
         {
             gun.SetActive(false);
             rifle.SetActive(true);
             currentGun = 1f;
         }
-        else
+        if(newWeapon == 1)
         {
             gun.SetActive(true);
             rifle.SetActive(false);
