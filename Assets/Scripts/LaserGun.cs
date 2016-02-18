@@ -21,6 +21,7 @@ public class LaserGun : MonoBehaviour
 
     void Start()
     {
+
         line = GetComponent<LineRenderer>();
         line.enabled = false;
         laserShot = false;
@@ -30,11 +31,24 @@ public class LaserGun : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
 
-        gunDamage = 30; //Will need to be pulled from another class, or be adjusted.
+        //gunDamage = 30; //Will need to be pulled from another class, or be adjusted.
     }
 
     void Update()
     {
+        GameObject FirstPersonCharacter = GameObject.Find("FirstPersonCharacter");
+        PlayerController playercontroller = FirstPersonCharacter.GetComponent<PlayerController>();
+
+        if (playercontroller.currentGun == 0f)
+        {
+            gunDamage = 17;
+        }
+
+        if (playercontroller.currentGun == 1f)
+        {
+            gunDamage = 40;
+        }
+
         shotPoint = transform.position;
         if (Input.GetMouseButtonDown(0) && !PlayerController.shooting && !PlayerController.switchADS && !PlayerController.OverHeat) {
             StopCoroutine("ShootLaser");

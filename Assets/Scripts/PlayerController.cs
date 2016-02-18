@@ -1,38 +1,50 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    //Guns
     public GameObject gun;
+    public GameObject rifle;
+    
+    //Bools
     public static bool shooting;
     public static bool ADS;
     public static bool switchADS;
-    private float shootDelay;
     public static bool OverHeat;
     private bool CanCover;
     private bool Covering;
     private bool showText;
-    public Slider HeatSlider;
-    public Text CoverPopUp;
+    
+    //Floats and ints
     public float crouchingSpeed;
     public float CspeedUp;
     public float GunHeat;
     public float TimerCover;
     public float hSliderValue = 0;
+    private float shootDelay;
+    public float currentGun;
+
+    //UI
+    public Slider HeatSlider;
+    public Text CoverPopUp;
 
     // Use this for initialization
     void Start()
     {
         shootDelay = 0;
-        shooting = false;
-        switchADS = false;
-        ADS = false;
+        TimerCover = 0.0f;
         crouchingSpeed = 0.1f;
         CspeedUp = crouchingSpeed;
         GunHeat = 0.0f;
+        currentGun = 0f;
+     
         showText = false;
-        TimerCover = 0.0f;
+        shooting = false;
+        switchADS = false;
+        ADS = false;
     }
 
     void OnTriggerEnter(Collider col)
@@ -84,6 +96,16 @@ public class PlayerController : MonoBehaviour
                 gun.GetComponent<Animator>().Play("GunADS_Shoot");
             }
             GunHeat += Time.deltaTime * 20;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            switchGun(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            switchGun(1);
         }
 
         //Crouching
@@ -143,6 +165,24 @@ public class PlayerController : MonoBehaviour
                 switchADS = true;
                 ADS = false;
             }
+        }
+    }
+
+    //Weapon changing
+    void switchGun(int newWeapon)
+    {
+        //Add an Array
+        if(gun.activeSelf)
+        {
+            gun.SetActive(false);
+            rifle.SetActive(true);
+            currentGun = 1f;
+        }
+        else
+        {
+            gun.SetActive(true);
+            rifle.SetActive(false);
+            currentGun = 0f;
         }
     }
 
