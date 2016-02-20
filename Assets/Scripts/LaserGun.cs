@@ -39,44 +39,63 @@ public class LaserGun : MonoBehaviour
         PlayerController playercontroller = FirstPersonCharacter.GetComponent<PlayerController>();
 
         //Gun damage
+        //Currently pla
+
+
+        //single shot pistol
         if (playercontroller.currentGun == 0)
         {
             gunDamage = 17;
+            playercontroller.fireRate = 0.4f;
         }
 
+        //burst fire pistol
         if (playercontroller.currentGun == 1)
         {
             gunDamage = 20;
+            playercontroller.fireRate = 0.9f;
         }
 
+        //revolver
         if (playercontroller.currentGun == 2)
         {
             gunDamage = 80;
+            playercontroller.fireRate = 1.2f;
         }
 
+        //semi automatic rifle
         if (playercontroller.currentGun == 3)
         {
             gunDamage = 40;
+            playercontroller.fireRate = 0.6f;
         }
 
+        //full automatic rifle
         if (playercontroller.currentGun == 4)
         {
             gunDamage = 20;
+            playercontroller.fireRate = 0.1f;
         }
 
+        //Bolt action rifle
         if (playercontroller.currentGun == 5)
         {
             gunDamage = 100;
+            playercontroller.fireRate = 1.5f;
         }
 
+        //pump action shotgun
         if (playercontroller.currentGun == 6)
         {
             gunDamage = 100;
+            playercontroller.fireRate = 1.3f;
         }
 
+        //semi automatic shotgun
         if (playercontroller.currentGun == 7)
         {
             gunDamage = 70;
+            playercontroller.fireRate = 0.8f;
         }
 
         shotPoint = transform.position;

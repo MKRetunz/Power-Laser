@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private bool CanCover;
     private bool Covering;
     private bool showText;
+    private bool rapidFire;
     
     //Floats and ints
     public float crouchingSpeed;
@@ -38,11 +39,15 @@ public class PlayerController : MonoBehaviour
     public float TimerCover;
     public float hSliderValue = 0;
     private float shootDelay;
+    public float fireRate;
+    private float PowerUpTimer;
+
     public int currentGun;
     public int maxGuns;
 
     //UI
     public Slider HeatSlider;
+    public Slider BoonSlider;
     public Text CoverPopUp;
 
     // Use this for initialization
@@ -53,14 +58,16 @@ public class PlayerController : MonoBehaviour
         crouchingSpeed = 0.1f;
         CspeedUp = crouchingSpeed;
         GunHeat = 0.0f;
-        currentGun = 0;
+        PowerUpTimer = 0.0f;
 
+        currentGun = 0;
         maxGuns = 8;
      
         showText = false;
         shooting = false;
         switchADS = false;
         ADS = false;
+        rapidFire = false;
 
         gunArray = new GameObject[maxGuns];
 
@@ -78,6 +85,9 @@ public class PlayerController : MonoBehaviour
             gunArray[i].SetActive(false);
 
         }
+
+        rapidFire = true;
+        PowerUpTimer = 30.0f;
     }
 
     void OnTriggerEnter(Collider col)
@@ -93,23 +103,24 @@ public class PlayerController : MonoBehaviour
         {
             CanCover = false;
         }
+
+        if (col.GetComponent<Collider>().name == "FirePickUp")
+        {
+            rapidFire = true;
+            PowerUpTimer = 30.0f;
+            Destroy(col.gameObject);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*if (Input.GetKey(KeyCode.F))
-        {
-            HUD.enemyDie = true;
-            HUD.score += 80;
-        }*/
-
         // Shoot delay
-        if (shooting && shootDelay < 0.8f)
+        if (shooting && shootDelay < fireRate)
         {
             shootDelay += 1 * Time.deltaTime;
         }
-        else if (shooting && shootDelay >= 0.8f)
+        else if (shooting && shootDelay >= fireRate)
         {
             shootDelay = 0;
             shooting = false;
@@ -121,12 +132,12 @@ public class PlayerController : MonoBehaviour
             if (!ADS)
             {
                 Debug.Log("Pressed left click.");
-                singleShotP.GetComponent<Animator>().Play("Gun_Shoot");
+                //singleShotP.GetComponent<Animator>().Play("Gun_Shoot");
             }
             else if (ADS)
             {
                 Debug.Log("Pressed left click.");
-                singleShotP.GetComponent<Animator>().Play("GunADS_Shoot");
+                //singleShotP.GetComponent<Animator>().Play("GunADS_Shoot");
             }
             GunHeat += Time.deltaTime * 20;
         }
@@ -181,6 +192,19 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+
+        if (PowerUpTimer <= 0.0f && rapidFire == true)
+        {
+            PowerUpTimer += Time.deltaTime;
+            fireRate = 0.1f;
+        }
+
+        if (PowerUpTimer >= 30.0f)
+        {
+            rapidFire = false;
+            resetGun(currentGun);
+        }
+
         //Cover
         else if (CanCover == true && Input.GetKey("z"))
         {
@@ -210,6 +234,7 @@ public class PlayerController : MonoBehaviour
         }
         if (GunHeat > 1.5f) { OverHeat = true; }
         HeatSlider.value = GunHeat;
+        BoonSlider.value = PowerUpTimer;
 
         //Aim mechanics
         if (Input.GetMouseButtonDown(1))
@@ -241,25 +266,22 @@ public class PlayerController : MonoBehaviour
             if(i == newWeapon)
             {
                 gunArray[i].SetActive(true);
+                currentGun = i;
+            }
+        }        
+    }
+
+    void resetGun(int CG)
+    {
+        for (int i = 0; i < maxGuns; i++)
+            {
+                gunArray[i].SetActive(false);
+        
+            if (i == CG)
+            {
+                gunArray[i].SetActive(true);
             }
         }
-
-        /*Add an Array
-        if (newWeapon == 0)
-        {
-            gun.SetActive(true);
-            semiAutoR.SetActive(false);
-            currentGun = 0f;
-        }
-        if(newWeapon == 1)
-        {
-            gun.SetActive(false);
-            semiAutoR.SetActive(true);
-            currentGun = 1f;
-        }*/
-
-
-        
     }
 
     void OnGUI()
