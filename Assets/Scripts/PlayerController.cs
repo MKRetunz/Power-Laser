@@ -85,9 +85,6 @@ public class PlayerController : MonoBehaviour
             gunArray[i].SetActive(false);
 
         }
-
-        rapidFire = true;
-        PowerUpTimer = 30.0f;
     }
 
     void OnTriggerEnter(Collider col)
@@ -107,7 +104,7 @@ public class PlayerController : MonoBehaviour
         if (col.GetComponent<Collider>().name == "FirePickUp")
         {
             rapidFire = true;
-            PowerUpTimer = 30.0f;
+            PowerUpTimer = 0.1f;
             Destroy(col.gameObject);
         }
     }
@@ -193,7 +190,7 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if (PowerUpTimer <= 0.0f && rapidFire == true)
+        if (PowerUpTimer >= 0.0f && rapidFire == true)
         {
             PowerUpTimer += Time.deltaTime;
             fireRate = 0.1f;
@@ -203,6 +200,7 @@ public class PlayerController : MonoBehaviour
         {
             rapidFire = false;
             resetGun(currentGun);
+            PowerUpTimer = 0.0f;
         }
 
         //Cover
