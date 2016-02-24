@@ -27,10 +27,10 @@ public class PlayerController : MonoBehaviour
     public static bool ADS;
     public static bool switchADS;
     public static bool OverHeat;
+    public static bool rapidFire;
     private bool CanCover;
     private bool Covering;
     private bool showText;
-    private bool rapidFire;
     
     //Floats and ints
     public float crouchingSpeed;
@@ -124,20 +124,26 @@ public class PlayerController : MonoBehaviour
         }
 
         //Shooting mechanics
-        if (Input.GetMouseButtonDown(0) && !shooting && !switchADS && !OverHeat)
+        if (Input.GetMouseButtonDown(0) && !shooting && !switchADS && !OverHeat && rapidFire == false)
         {
             if (!ADS)
             {
                 Debug.Log("Pressed left click.");
-                //singleShotP.GetComponent<Animator>().Play("Gun_Shoot");
+                singleShotP.GetComponent<Animator>().Play("Gun_Shoot");
             }
             else if (ADS)
             {
                 Debug.Log("Pressed left click.");
-                //singleShotP.GetComponent<Animator>().Play("GunADS_Shoot");
+                singleShotP.GetComponent<Animator>().Play("GunADS_Shoot");
             }
             GunHeat += Time.deltaTime * 20;
         }
+
+        if (Input.GetMouseButton(0) && rapidFire == true)
+        {
+            Debug.Log("spam");
+        }
+
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
