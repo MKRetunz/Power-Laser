@@ -139,9 +139,9 @@ public class PlayerController : MonoBehaviour
             GunHeat += Time.deltaTime * 20;
         }
 
-        if (Input.GetMouseButton(0) && rapidFire == true)
+        if (Input.GetMouseButton(0) && !shooting && !switchADS && !OverHeat && rapidFire == true)
         {
-            Debug.Log("spam");
+            GunHeat += Time.deltaTime;
         }
 
 
