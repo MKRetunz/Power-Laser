@@ -16,6 +16,7 @@ public class LaserGun : MonoBehaviour
     float shotDelay;
     float speed;
     float alpha;
+    float shootTimer;
 
     int gunDamage;
 
@@ -29,9 +30,9 @@ public class LaserGun : MonoBehaviour
         speed = 10;
         alpha = 1;
         shotDelay = 0;
+        shootTimer = 0.0f;
 
         Cursor.lockState = CursorLockMode.Locked;
-
     }
 
     void Update()
@@ -145,7 +146,7 @@ public class LaserGun : MonoBehaviour
 
             line.SetPosition(0, shotPoint);
 
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Physics.Raycast(ray, out hit, 100) && shootTimer == 0.0f)
             {
                 line.SetPosition(1, hit.point);
                 if (hit.rigidbody && !hit.transform.GetComponent<TargetScript>().isAlive)
@@ -158,10 +159,12 @@ public class LaserGun : MonoBehaviour
                     hit.transform.GetComponent<TargetScript>().GetHit(gunDamage);
                 }
                 Instantiate(laserparticles, hit.point, particlerotation.transform.rotation);
+                shootTimer += 0.1f;
             }
             else
             {
                 line.SetPosition(1, ray.GetPoint(100));
+                shootTimer = 0.0f;
             }
             laserShot = true;
          yield return null;
