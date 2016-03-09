@@ -28,9 +28,11 @@ public class PlayerController : MonoBehaviour
     public static bool switchADS;
     public static bool OverHeat;
     public static bool rapidFire;
+    public static bool noAmmo;
     private bool CanCover;
     private bool Covering;
     private bool showText;
+    private bool AmmoCD;
     
     //Floats and ints
     public float crouchingSpeed;
@@ -41,13 +43,17 @@ public class PlayerController : MonoBehaviour
     private float shootDelay;
     public float fireRate;
     private float PowerUpTimer;
+    private float ReloadTimer;
 
     public int currentGun;
     public int maxGuns;
+    public int AmmoClip;
+    private int currentAmmo;
 
     //UI
     public Slider HeatSlider;
     public Slider BoonSlider;
+    public Slider AmmoSlider;
     public Text CoverPopUp;
 
     // Use this for initialization
@@ -59,6 +65,7 @@ public class PlayerController : MonoBehaviour
         CspeedUp = crouchingSpeed;
         GunHeat = 0.0f;
         PowerUpTimer = 0.0f;
+        ReloadTimer = 0.0f;
 
         currentGun = 0;
         maxGuns = 8;
@@ -80,10 +87,13 @@ public class PlayerController : MonoBehaviour
         gunArray[6] = pumpActionS;
         gunArray[7] = semiAutoS;
 
+        AmmoCD = false;
+        AmmoClip = 6;
+        currentAmmo = AmmoClip;
+
         for (int i = 1; i < maxGuns; i++)
         {
             gunArray[i].SetActive(false);
-
         }
     }
 
@@ -124,7 +134,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Shooting mechanics
-        if (Input.GetMouseButtonDown(0) && !shooting && !switchADS && !OverHeat && rapidFire == false)
+        if (Input.GetMouseButtonDown(0) && !shooting && !switchADS && !OverHeat && noAmmo == false && rapidFire == false)
         {
             if (!ADS)
             {
@@ -136,53 +146,80 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Pressed left click.");
                 singleShotP.GetComponent<Animator>().Play("GunADS_Shoot");
             }
-            GunHeat += Time.deltaTime * 20;
+            if (AmmoCD == true)
+            {
+                GunHeat += Time.deltaTime * 20;
+            }
+            if (AmmoCD == false)
+            {
+                currentAmmo--;
+            }
         }
 
-        if (Input.GetMouseButton(0) && !shooting && !switchADS && !OverHeat && rapidFire == true)
+        if (Input.GetMouseButton(0) && !shooting && !switchADS && !OverHeat && !noAmmo && rapidFire == true)
         {
-            GunHeat += Time.deltaTime;
+            if (AmmoCD == true)
+            {
+                GunHeat += Time.deltaTime;
+            }
+            else
+            {
+                currentAmmo--;
+            }
         }
-
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             switchGun(0);
+            AmmoCD = false;
+            AmmoClip = 6;
+            if (currentAmmo > AmmoClip) { currentAmmo = AmmoClip; }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             switchGun(1);
+            AmmoCD = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             switchGun(2);
+            AmmoClip = 6;
+            if (currentAmmo > AmmoClip) { currentAmmo = AmmoClip; }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             switchGun(3);
+            AmmoCD = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             switchGun(4);
+            AmmoCD = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             switchGun(5);
+            AmmoClip = 5;
+            if (currentAmmo > AmmoClip) { currentAmmo = AmmoClip; }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             switchGun(6);
+            AmmoClip = 2;
+            if (currentAmmo > AmmoClip) { currentAmmo = AmmoClip; }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             switchGun(7);
+            AmmoClip = 3;
+            if (currentAmmo > AmmoClip) { currentAmmo = AmmoClip; }
         }
 
         //Crouching
@@ -223,8 +260,21 @@ public class PlayerController : MonoBehaviour
             }
         }
         transform.localPosition = new Vector3(0, CspeedUp, 0);
-        GunHeat -= Time.deltaTime / 2;
+        if (AmmoCD == true) { GunHeat -= Time.deltaTime / 2; }
         TimerCover += Time.deltaTime;
+
+        if (currentAmmo == 0)
+        {
+            ReloadTimer += Time.deltaTime;
+            noAmmo = true;
+        }
+
+        if (ReloadTimer >= 3.0f)
+        {
+            currentAmmo = AmmoClip;
+            ReloadTimer = 0.0f;
+            noAmmo = false;
+        }
 
         if (TimerCover > 3.0)
         {
@@ -237,6 +287,8 @@ public class PlayerController : MonoBehaviour
             OverHeat = false;
         }
         if (GunHeat > 1.5f) { OverHeat = true; }
+
+        AmmoSlider.value = currentAmmo;
         HeatSlider.value = GunHeat;
         BoonSlider.value = PowerUpTimer;
 
@@ -279,8 +331,8 @@ public class PlayerController : MonoBehaviour
     {
         for (int i = 0; i < maxGuns; i++)
             {
-                gunArray[i].SetActive(false);
-        
+            gunArray[i].SetActive(false);
+
             if (i == CG)
             {
                 gunArray[i].SetActive(true);

@@ -102,12 +102,12 @@ public class LaserGun : MonoBehaviour
 
         shotPoint = gunPos.transform.position;
         //shotPoint.y -= 0.8f;
-        if (Input.GetMouseButton(0) && !PlayerController.shooting && !PlayerController.switchADS && !PlayerController.OverHeat && !PlayerController.rapidFire) {
+        if (Input.GetMouseButton(0) && !PlayerController.shooting && !PlayerController.switchADS && !PlayerController.OverHeat && !PlayerController.noAmmo && !PlayerController.rapidFire) {
             StopCoroutine("ShootLaser");
             StartCoroutine("ShootLaser");
         }
 
-        if (Input.GetMouseButton(0) && !PlayerController.shooting && !PlayerController.switchADS && !PlayerController.OverHeat && PlayerController.rapidFire)
+        if (Input.GetMouseButton(0) && !PlayerController.shooting && !PlayerController.switchADS && !PlayerController.OverHeat && !PlayerController.noAmmo && PlayerController.rapidFire)
         {
             StopCoroutine("RapidLaser");
             StartCoroutine("RapidLaser");
