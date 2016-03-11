@@ -8,8 +8,20 @@ public class TargetScript : MonoBehaviour {
     public GameObject player;
     Vector3 distance;
 
-	// Use this for initialization
-	void Start () {
+    void OnTriggerEnter(Collider col)
+    {
+        GameObject FirstPersonCharacter = GameObject.Find("FirstPersonCharacter");
+        LaserGun lasergun = FirstPersonCharacter.GetComponent<LaserGun>();
+
+        if (col.GetComponent<Collider>().name == "Bullet(Clone)")
+        {
+            this.GetHit(lasergun.gunDamage);
+            Destroy(col.gameObject);
+        }
+    }
+
+            // Use this for initialization
+            void Start () {
         hp = 100;
         isAlive = true;
 	}
@@ -39,6 +51,7 @@ public class TargetScript : MonoBehaviour {
         {
             HUD.score += 80;
             HUD.enemyDie = true;
+            Destroy(this.gameObject);
         }
         StartCoroutine("TargetHit");
     }

@@ -29,11 +29,11 @@ public class PlayerController : MonoBehaviour
     public static bool OverHeat;
     public static bool rapidFire;
     public static bool noAmmo;
+    public static bool AmmoCD;
     private bool CanCover;
     private bool Covering;
     private bool showText;
-    private bool AmmoCD;
-    
+
     //Floats and ints
     public float crouchingSpeed;
     public float CspeedUp;
@@ -87,6 +87,8 @@ public class PlayerController : MonoBehaviour
         gunArray[6] = pumpActionS;
         gunArray[7] = semiAutoS;
 
+
+        //Starting gun
         AmmoCD = false;
         AmmoClip = 6;
         currentAmmo = AmmoClip;

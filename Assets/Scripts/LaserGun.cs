@@ -9,6 +9,7 @@ public class LaserGun : MonoBehaviour
     public GameObject laserparticles;
     public Transform particlerotation;
     public GameObject gunPos;
+    public Rigidbody projectile;
 
     LineRenderer line;
     Vector3 shotPoint;
@@ -17,9 +18,10 @@ public class LaserGun : MonoBehaviour
     float speed;
     float alpha;
     float shootTimer;
+    public float bSpeed;
+    public int gunDamage;
 
-    int gunDamage;
-
+    float killTimer;
 
     void Start()
     {
@@ -31,6 +33,8 @@ public class LaserGun : MonoBehaviour
         alpha = 1;
         shotDelay = 0;
         shootTimer = 0.0f;
+
+        bSpeed = 20;
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -138,33 +142,42 @@ public class LaserGun : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            line.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0, Time.time);
-
-            Ray ray = new Ray();
-            ray = c.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-            RaycastHit hit;
-
-            line.SetPosition(0, shotPoint);
-
-            if (Physics.Raycast(ray, out hit, 100) && shootTimer == 0.0f)
+            if (PlayerController.AmmoCD == false)
             {
-                line.SetPosition(1, hit.point);
-                if (hit.rigidbody && !hit.transform.GetComponent<TargetScript>().isAlive)
-                {
-                    hit.rigidbody.AddForceAtPosition(transform.forward * 1000, hit.point);
-                }
-                else if (hit.rigidbody)
-                {
-                    hit.rigidbody.AddForceAtPosition(transform.forward * 150, hit.point);
-                    hit.transform.GetComponent<TargetScript>().GetHit(gunDamage);
-                }
-                Instantiate(laserparticles, hit.point, particlerotation.transform.rotation);
-                shootTimer += 0.1f;
+                Rigidbody bullet = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
+
+                bullet.velocity = transform.TransformDirection(new Vector3(0, 0, bSpeed));
             }
-            else
+            if (PlayerController.AmmoCD == true)
             {
-                line.SetPosition(1, ray.GetPoint(100));
-                shootTimer = 0.0f;
+                line.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0, Time.time);
+
+                Ray ray = new Ray();
+                ray = c.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+                RaycastHit hit;
+
+                line.SetPosition(0, shotPoint);
+
+                if (Physics.Raycast(ray, out hit, 100) && shootTimer == 0.0f)
+                {
+                    line.SetPosition(1, hit.point);
+                    if (hit.rigidbody && !hit.transform.GetComponent<TargetScript>().isAlive)
+                    {
+                        hit.rigidbody.AddForceAtPosition(transform.forward * 1000, hit.point);
+                    }
+                    else if (hit.rigidbody)
+                    {
+                        hit.rigidbody.AddForceAtPosition(transform.forward * 150, hit.point);
+                        hit.transform.GetComponent<TargetScript>().GetHit(gunDamage);
+                    }
+                    Instantiate(laserparticles, hit.point, particlerotation.transform.rotation);
+                    shootTimer += 0.1f;
+                }
+                else
+                {
+                    line.SetPosition(1, ray.GetPoint(100));
+                    shootTimer = 0.0f;
+                }
             }
             laserShot = true;
          yield return null;
@@ -179,34 +192,43 @@ public class LaserGun : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            line.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0, Time.time);
-
-            Ray ray = new Ray();
-            ray = c.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-            RaycastHit hit;
-
-            line.SetPosition(0, shotPoint);
-
-            if (Physics.Raycast(ray, out hit, 100))
+            if (PlayerController.AmmoCD == false)
             {
-                line.SetPosition(1, hit.point);
-                if (hit.rigidbody && !hit.transform.GetComponent<TargetScript>().isAlive)
-                {
-                    hit.rigidbody.AddForceAtPosition(transform.forward * 1000, hit.point);
-                }
-                else if (hit.rigidbody)
-                {
-                    hit.rigidbody.AddForceAtPosition(transform.forward * 150, hit.point);
-                    hit.transform.GetComponent<TargetScript>().GetHit(gunDamage);
-                }
-                Instantiate(laserparticles, hit.point, particlerotation.transform.rotation);
+                Rigidbody bullet = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
+
+                bullet.velocity = transform.TransformDirection(new Vector3(0, 0, bSpeed));
             }
-            else
+            if (PlayerController.AmmoCD == true)
             {
-                line.SetPosition(1, ray.GetPoint(100));
+                line.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0, Time.time);
+
+                Ray ray = new Ray();
+                ray = c.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+                RaycastHit hit;
+
+                line.SetPosition(0, shotPoint);
+
+                if (Physics.Raycast(ray, out hit, 100))
+                {
+                    line.SetPosition(1, hit.point);
+                    if (hit.rigidbody && !hit.transform.GetComponent<TargetScript>().isAlive)
+                    {
+                        hit.rigidbody.AddForceAtPosition(transform.forward * 1000, hit.point);
+                    }
+                    else if (hit.rigidbody)
+                    {
+                        hit.rigidbody.AddForceAtPosition(transform.forward * 150, hit.point);
+                        hit.transform.GetComponent<TargetScript>().GetHit(gunDamage);
+                    }
+                    Instantiate(laserparticles, hit.point, particlerotation.transform.rotation);
+                }
+                else
+                {
+                    line.SetPosition(1, ray.GetPoint(100));
+                }
+                laserShot = true;
+                yield return null;
             }
-            laserShot = true;
-            yield return null;
         }
 
         PlayerController.shooting = true;
