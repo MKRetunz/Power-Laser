@@ -20,6 +20,7 @@ public class LaserGun : MonoBehaviour
     float shootTimer;
     public float bSpeed;
     public int gunDamage;
+    int i;
 
     float killTimer;
 
@@ -33,6 +34,7 @@ public class LaserGun : MonoBehaviour
         alpha = 1;
         shotDelay = 0;
         shootTimer = 0.0f;
+        i = 0;
 
         bSpeed = 20;
 
@@ -147,6 +149,7 @@ public class LaserGun : MonoBehaviour
                 Rigidbody bullet = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
 
                 bullet.velocity = transform.TransformDirection(new Vector3(0, 0, bSpeed));
+
             }
             if (PlayerController.AmmoCD == true)
             {
