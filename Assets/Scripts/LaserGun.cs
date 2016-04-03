@@ -20,6 +20,7 @@ public class LaserGun : MonoBehaviour
     float shootTimer;
     public float bSpeed;
     public int gunDamage;
+    public int gunRange; //0 = short 1 = medium 2 = long
     int i;
 
     float killTimer;
@@ -35,6 +36,7 @@ public class LaserGun : MonoBehaviour
         shotDelay = 0;
         shootTimer = 0.0f;
         i = 0;
+        
 
         bSpeed = 20;
 
@@ -47,14 +49,13 @@ public class LaserGun : MonoBehaviour
         PlayerController playercontroller = FirstPersonCharacter.GetComponent<PlayerController>();
 
         //Gun damage
-        //Currently pla
-
 
         //single shot pistol
         if (playercontroller.currentGun == 0)
         {
             gunDamage = 17;
             playercontroller.fireRate = 0.4f;
+            gunRange = 1;
         }
 
         //burst fire pistol
@@ -62,6 +63,7 @@ public class LaserGun : MonoBehaviour
         {
             gunDamage = 20;
             playercontroller.fireRate = 0.9f;
+            gunRange = 1;
         }
 
         //revolver
@@ -69,6 +71,7 @@ public class LaserGun : MonoBehaviour
         {
             gunDamage = 80;
             playercontroller.fireRate = 1.2f;
+            gunRange = 1;
         }
 
         //semi automatic rifle
@@ -76,6 +79,7 @@ public class LaserGun : MonoBehaviour
         {
             gunDamage = 40;
             playercontroller.fireRate = 0.6f;
+            gunRange = 2;
         }
 
         //full automatic rifle
@@ -83,6 +87,7 @@ public class LaserGun : MonoBehaviour
         {
             gunDamage = 20;
             playercontroller.fireRate = 0.1f;
+            gunRange = 2;
         }
 
         //Bolt action rifle
@@ -90,6 +95,7 @@ public class LaserGun : MonoBehaviour
         {
             gunDamage = 100;
             playercontroller.fireRate = 1.5f;
+            gunRange = 2;
         }
 
         //pump action shotgun
@@ -97,6 +103,7 @@ public class LaserGun : MonoBehaviour
         {
             gunDamage = 100;
             playercontroller.fireRate = 1.3f;
+            gunRange = 0;
         }
 
         //semi automatic shotgun
@@ -104,6 +111,7 @@ public class LaserGun : MonoBehaviour
         {
             gunDamage = 70;
             playercontroller.fireRate = 0.8f;
+            gunRange = 0;
         }
 
         shotPoint = gunPos.transform.position;

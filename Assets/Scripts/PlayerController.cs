@@ -119,6 +119,11 @@ public class PlayerController : MonoBehaviour
             PowerUpTimer = 0.1f;
             Destroy(col.gameObject);
         }
+        if (col.GetComponent<Collider>().name == "LasergateHit")
+        {
+            HUD.score -= 100;
+            HUD.playerHit = true;
+        }
     }
 
     // Update is called once per frame
