@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ColliderActivator.cs" />
+    <Compile Include="Assets\Scripts\EnemySpawn.cs" />
     <Compile Include="Assets\Scripts\HUD.cs" />
     <Compile Include="Assets\Scripts\LaserGun.cs" />
     <Compile Include="Assets\Scripts\LaserParticles.cs" />
