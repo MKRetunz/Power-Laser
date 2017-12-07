@@ -24,7 +24,7 @@ public class HUD : MonoBehaviour
     public static bool crosshairTrigger = true;
     public bool scaleToADS = false;
     public bool scaleFromADS = false;
-    public bool playerHit = false;
+    public static bool playerHit = false;
     public bool plusTrigger = false;
     public bool minusTrigger = false;
     public static bool enemyHit = false;

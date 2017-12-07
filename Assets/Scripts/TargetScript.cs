@@ -2,15 +2,27 @@
 using System.Collections;
 
 public class TargetScript : MonoBehaviour {
-    public byte hp;
+    public int hp;
     public bool isAlive;
     public Transform target;
     public GameObject player;
     Vector3 distance;
 
-	// Use this for initialization
-	void Start () {
-        hp = 3;
+    void OnTriggerEnter(Collider col)
+    {
+        GameObject FirstPersonCharacter = GameObject.Find("FirstPersonCharacter");
+        LaserGun lasergun = FirstPersonCharacter.GetComponent<LaserGun>();
+
+        if (col.GetComponent<Collider>().name == "Bullet(Clone)")
+        {
+            this.GetHit(lasergun.gunDamage);
+            Destroy(col.gameObject);
+        }
+    }
+
+            // Use this for initialization
+            void Start () {
+        hp = 100;
         isAlive = true;
 	}
 	
@@ -27,19 +39,20 @@ public class TargetScript : MonoBehaviour {
         }
 	}
 
-    public void GetHit()
+    public void GetHit(int damage)
     {
+        hp -= damage;
         if(hp > 1)
         {
             HUD.score += 10;
             HUD.enemyHit = true;
         }
-        else if(hp == 1)
+        else if(hp <= 0)
         {
             HUD.score += 80;
             HUD.enemyDie = true;
+            Destroy(this.gameObject);
         }
-        hp--;
         StartCoroutine("TargetHit");
     }
 
